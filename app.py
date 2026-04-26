@@ -7,9 +7,10 @@ app.secret_key = 'secret'
 def get_db():
     return sqlite3.connect('hw13.db')
 
-# ------------------------
-# LOGIN
-# ------------------------
+def check_login():
+    return session.get('logged_in')
+
+# ---------------- LOGIN ----------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -21,14 +22,7 @@ def login():
             error = 'Invalid credentials'
     return render_template('login.html', error=error)
 
-def check_login():
-    if not session.get('logged_in'):
-        return False
-    return True
-
-# ------------------------
-# DASHBOARD
-# ------------------------
+# ---------------- DASHBOARD ----------------
 @app.route('/dashboard')
 def dashboard():
     if not check_login():
@@ -40,9 +34,7 @@ def dashboard():
 
     return render_template('dashboard.html', students=students, quizzes=quizzes)
 
-# ------------------------
-# ADD STUDENT
-# ------------------------
+# ---------------- ADD STUDENT ----------------
 @app.route('/student/add', methods=['GET', 'POST'])
 def add_student():
     if not check_login():
@@ -59,9 +51,7 @@ def add_student():
 
     return render_template('add_student.html')
 
-# ------------------------
-# ADD QUIZ
-# ------------------------
+# ---------------- ADD QUIZ ----------------
 @app.route('/quiz/add', methods=['GET', 'POST'])
 def add_quiz():
     if not check_login():
@@ -78,25 +68,23 @@ def add_quiz():
 
     return render_template('add_quiz.html')
 
-# ------------------------
-# STUDENT RESULTS
-# ------------------------
+# ---------------- STUDENT RESULTS ----------------
 @app.route('/student/<int:id>')
 def student_results(id):
     if not check_login():
         return redirect('/login')
 
     db = get_db()
-    results = db.execute(
-        "SELECT quiz_id, score FROM results WHERE student_id = ?",
-        (id,)
-    ).fetchall()
+    results = db.execute("""
+        SELECT quizzes.subject, quizzes.quiz_date, results.score
+        FROM results
+        JOIN quizzes ON results.quiz_id = quizzes.id
+        WHERE results.student_id = ?
+    """, (id,)).fetchall()
 
     return render_template('student_results.html', results=results)
 
-# ------------------------
-# ADD RESULT
-# ------------------------
+# ---------------- ADD RESULT ----------------
 @app.route('/results/add', methods=['GET', 'POST'])
 def add_result():
     if not check_login():
@@ -117,6 +105,6 @@ def add_result():
 
     return render_template('add_result.html', students=students, quizzes=quizzes)
 
-# ------------------------
+# ---------------- RUN ----------------
 if __name__ == '__main__':
     app.run(debug=True)
