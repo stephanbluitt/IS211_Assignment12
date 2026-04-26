@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IS211 Homework 13</title>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> | 
+        <a href="{{ url_for('add_student') }}">Add Student</a> | 
+        <a href="{{ url_for('add_quiz') }}">Add Quiz</a> | 
+        <a href="{{ url_for('add_result') }}">Add Quiz Result</a> |
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+    <hr>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+        {% for category, message in messages %}
+          <li style="color: {% if category == 'error' %}red{% else %}green{% endif %}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    
+    {% block content %}{% endblock %}
+</body>
+</html>
