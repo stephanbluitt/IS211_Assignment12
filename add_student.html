@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Add New Student</h2>
+    <form method="POST">
+        <label>First Name: <input type="text" name="first_name"></label><br><br>
+        <label>Last Name: <input type="text" name="last_name"></label><br><br>
+        <input type="submit" value="Add Student">
+    </form>
+{% endblock %}
