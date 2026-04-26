@@ -1,1 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Record Quiz Result</h2>
+    <form method="POST">
+        <label>Student: 
+            <select name="student_id">
+                {% for s in students %}
+                    <option value="{{ s.id }}">{{ s.first_name }} {{ s.last_name }}</option>
+                {% endfor %}
+            </select>
+        </label><br><br>
+        
+        <label>Quiz: 
+            <select name="quiz_id">
+                {% for q in quizzes %}
+                    <option value="{{ q.id }}">{{ q.subject }} ({{ q.quiz_date }})</option>
+                {% endfor %}
+            </select>
+        </label><br><br>
 
+        <label>Score (0-100): <input type="number" name="score" min="0" max="100"></label><br><br>
+        
+        <input type="submit" value="Add Result">
+    </form>
+{% endblock %}
