@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Add New Quiz</h2>
+    <form method="POST">
+        <label>Subject: <input type="text" name="subject"></label><br><br>
+        <label>Number of Questions: <input type="number" name="num_questions" min="1"></label><br><br>
+        <label>Date Given: <input type="date" name="quiz_date"></label><br><br>
+        <input type="submit" value="Add Quiz">
+    </form>
+{% endblock %}
