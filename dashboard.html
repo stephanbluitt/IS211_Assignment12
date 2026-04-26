@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Student Roster</h2>
+    <table border="1">
+        <tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Actions</th></tr>
+        {% for s in students %}
+        <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.first_name }}</td>
+            <td>{{ s.last_name }}</td>
+            <td><a href="{{ url_for('view_results', id=s.id) }}">View Results</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Quizzes</h2>
+    <table border="1">
+        <tr><th>ID</th><th>Subject</th><th>Questions</th><th>Date</th></tr>
+        {% for q in quizzes %}
+        <tr>
+            <td>{{ q.id }}</td>
+            <td>{{ q.subject }}</td>
+            <td>{{ q.num_questions }}</td>
+            <td>{{ q.quiz_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
